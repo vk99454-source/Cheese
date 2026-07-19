@@ -3,12 +3,29 @@
  */
 package org.example;
 
+import java.util.ArrayList;
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        CheeseReader reader = new CheeseReader();
+        ArrayList<Cheese> cheeses = reader.readCheeses("cheese_data.csv");
+
+        CheeseCalculator calculator = new CheeseCalculator(cheeses);
+
+        int pasteurizedCount = calculator.countPasteurizedCheeses();
+        int rawMilkCount = calculator.countRawMilkCheeses();
+        int organicCount = calculator.countOrganicCheesesOver41Moisture();
+        String mostCommonMilk = calculator.findMostCommonMilkType();
+
+        String output = "Pasteurized milk cheeses: " + pasteurizedCount + "\n"
+                + "Raw milk cheeses: " + rawMilkCount + "\n"
+                + "Organic cheeses over 41.0% moisture: " + organicCount + "\n"
+                + "Most common milk type: " + mostCommonMilk;
+
+        OutputWriter writer = new OutputWriter();
+        writer.writeOutput("output.txt", output);
+
+        System.out.println("Calculations complete. Results written to output.txt.");
     }
 }
